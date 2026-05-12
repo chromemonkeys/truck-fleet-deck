@@ -14,19 +14,28 @@
       "The Forge.html"
     ],
     "rewrites": [
-      { "source": "/", "destination": "/presentation.html" }
+      {
+        "source": "/",
+        "destination": "/presentation.html"
+      }
     ],
     "headers": [
       {
         "source": "**/*.@(svg|glb)",
         "headers": [
-          { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
         ]
       },
       {
         "source": "**/*.html",
         "headers": [
-          { "key": "Cache-Control", "value": "public, max-age=300" }
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=300"
+          }
         ]
       }
     ]
