@@ -183,7 +183,7 @@
     font-style: italic; font-family: var(--display); font-weight: 400; color: var(--ink-2);
   }
 
-  /* Truck container — drives in/out */
+  /* Truck container - drives in/out */
   .truck-row{
     width: 100%;
     display: flex; justify-content: center;
@@ -250,7 +250,7 @@
   }
 
   /* =========================================================
-     Slide 02 — dispatch board build
+     Slide 02 - dispatch board build
      ========================================================= */
   .slide-dispatch .inner-2{
     width: 100%; height: 100%;
@@ -384,7 +384,7 @@
   }
 
   /* =========================================================
-     Slide 03 — How do we measure success (text-first + Forge readouts)
+     Slide 03 - How do we measure success (text-first + Forge readouts)
      ========================================================= */
   .slide-success .inner-3{
     width: 100%; height: 100%;
@@ -441,11 +441,11 @@
   }
 
   .slide-success .pivot{
-    margin-top: 18px; padding-top: 14px;
+    margin-top: 22px; padding-top: 18px;
     border-top: 1px solid var(--line);
-    font-family: var(--display); font-style: italic;
-    font-size: clamp(16px, 1.6vw, 20px);
-    color: var(--ink-2); line-height: 1.4;
+    font-family: var(--display); font-style: italic; font-weight: 500;
+    font-size: clamp(22px, 2.4vw, 30px);
+    color: var(--ink); line-height: 1.25; letter-spacing: -.01em;
     opacity: 0; transform: translateY(6px);
     transition: opacity .7s ease, transform .7s ease;
   }
@@ -523,11 +523,11 @@
     .slide-success .sec ul{ font-size: 13px; }
     .readout{ padding: 8px 0; }
     .readout .v{ font-size: 18px; }
-    .slide-success .pivot{ margin-top: 12px; padding-top: 10px; font-size: clamp(14px, 1.5vw, 18px); }
+    .slide-success .pivot{ margin-top: 14px; padding-top: 12px; font-size: clamp(18px, 2vw, 24px); }
   }
 
   /* =========================================================
-     Slide 04 — Not really. (seasonality confounds)
+     Slide 04 - Not really. (seasonality confounds)
      ========================================================= */
   .slide-confound .inner-4{
     width: 100%; height: 100%;
@@ -568,7 +568,10 @@
   .slide-confound .sub{
     font-size: 16px; line-height: 1.55; color: var(--ink-2);
     margin: 0 0 14px; max-width: 48ch;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity .55s ease, transform .55s ease;
   }
+  .slide-confound .sub.on{ opacity: 1; transform: translateY(0); }
   .slide-confound ul.reasons{
     list-style: none; padding: 0; margin: 4px 0 18px;
   }
@@ -602,7 +605,7 @@
   .slide-confound .pivot.on{ opacity: 1; transform: translateY(0); }
   .slide-confound .pivot em{ font-style: italic; color: var(--accent); font-weight: 500; }
 
-  /* Right column — seasonality graph */
+  /* Right column - seasonality graph */
   .slide-confound .col-graph{ min-width: 0; }
   .slide-confound .figure{
     background: var(--paper);
@@ -709,7 +712,7 @@
   }
 
   /* =========================================================
-     Slide 05 — Normalise metrics
+     Slide 05 - Normalise metrics
      ========================================================= */
   .slide-normalise .inner-5{
     width: 100%; height: 100%;
@@ -800,7 +803,7 @@
   .slide-normalise ul.stubborn li.on{ opacity: 1; transform: translateY(0); }
   .slide-normalise ul.stubborn li b{ color: var(--ink); font-weight: 600; }
 
-  /* Right column — gauge stack */
+  /* Right column - gauge stack */
   .slide-normalise .col-gauges{
     min-width: 0;
     display: flex; flex-direction: column;
@@ -850,7 +853,7 @@
     position: absolute; top: 0; bottom: 0; left: 0;
     width: 0%; background: var(--good);
   }
-  /* Stubborn gauges — no value, just key + sub */
+  /* Stubborn gauges - no value, just key + sub */
   .gauge.stubborn{ opacity: 0.30; }
   .gauge.stubborn.on{ opacity: 0.85; }
   .gauge.stubborn .k{ color: var(--accent); }
@@ -894,7 +897,7 @@
   }
 
   /* =========================================================
-     Slide 06 — Tools available (4-card horizontal carousel)
+     Slide 06 - Tools available (4-card horizontal carousel)
      ========================================================= */
   .slide-tools .inner-6{
     width: 100%; height: 100%;
@@ -1012,7 +1015,7 @@
   .v-twin text.note{ font-family: var(--display); font-style: italic; font-size: 12px; fill: var(--muted); }
   .v-twin .split-line{ stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 2; }
 
-  /* Sub-card 4 — extra row in column 1 for the animated truck SVG below the text */
+  /* Sub-card 4 - extra row in column 1 for the animated truck SVG below the text */
   .sub-card.has-twin-bg{
     grid-template-rows: auto auto auto auto 1fr;
   }
@@ -1066,7 +1069,7 @@
       grid-column: 1; grid-row: 5;
       max-width: 320px;
     }
-    /* Drop the redundant background image on narrow screens — the v-twin svg already conveys the split */
+    /* Drop the redundant background image on narrow screens - the v-twin svg already conveys the split */
     .sub-card.has-twin-bg .twin-bg{ display: none; }
   }
   @media (max-height: 760px){
@@ -1078,52 +1081,52 @@
   }
 
   /* =========================================================
-     Slide 07 — Strategic implementation (conclusion)
+     Slide 07 - Strategic implementation (conclusion)
      ========================================================= */
   .slide-conclusion .inner-7{
     width: 100%; height: 100%;
     display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 110px 6vw 90px;
-    max-width: 920px;
+    align-items: flex-start; justify-content: center;
+    padding: 88px 6vw 76px;
+    max-width: 1100px;
     margin: 0 auto;
   }
   .slide-conclusion .header{
-    text-align: center;
+    text-align: left;
     max-width: 720px;
     margin-bottom: 28px;
   }
   .slide-conclusion .num{
     font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
-    color: var(--muted); text-transform: uppercase; margin-bottom: 12px;
+    color: var(--muted); text-transform: uppercase; margin-bottom: 16px;
   }
   .slide-conclusion h2{
     font-family: var(--display); font-weight: 500;
-    font-size: clamp(36px, 5vw, 64px);
-    line-height: 1.02; letter-spacing: -.02em;
+    font-size: clamp(30px, 3.4vw, 48px);
+    line-height: 1.08; letter-spacing: -.012em;
     margin: 0 0 18px;
     color: var(--ink); text-wrap: balance;
   }
   .slide-conclusion h2 em{ font-style: italic; font-weight: 400; color: var(--ink-2); }
   .slide-conclusion .lead{
     font-family: var(--sans);
-    font-size: clamp(15px, 1.5vw, 17.5px);
-    line-height: 1.55;
+    font-size: 17px;
+    line-height: 1.6;
     color: var(--ink-2);
     max-width: 58ch;
-    margin: 0 auto;
+    margin: 0;
   }
   .slide-conclusion .principles{
     list-style: none; padding: 0; margin: 0;
-    width: 100%; max-width: 800px;
+    width: 100%; max-width: 880px;
     counter-reset: p;
   }
   .slide-conclusion .principles li{
     counter-increment: p;
     display: grid;
-    grid-template-columns: 52px 1fr;
+    grid-template-columns: 44px 1fr;
     gap: 4px 22px;
-    padding: 18px 0;
+    padding: 14px 0;
     border-top: 1px solid var(--line);
     opacity: 0; transform: translateY(10px);
     transition: opacity .7s ease, transform .7s ease;
@@ -1137,16 +1140,16 @@
   .slide-conclusion .principles li::before{
     content: counter(p, decimal-leading-zero);
     grid-column: 1; grid-row: 1 / span 2;
-    font-family: var(--mono); font-size: 13px;
+    font-family: var(--mono); font-size: 11px;
     color: var(--accent); letter-spacing: .14em;
     align-self: start;
-    padding-top: 8px;
+    padding-top: 6px;
   }
   .slide-conclusion .principles h3{
     grid-column: 2; grid-row: 1;
     font-family: var(--display); font-weight: 500;
-    font-size: clamp(20px, 2.2vw, 28px);
-    line-height: 1.15;
+    font-size: clamp(18px, 1.9vw, 24px);
+    line-height: 1.2;
     letter-spacing: -.005em;
     margin: 0;
     color: var(--ink);
@@ -1156,7 +1159,7 @@
     margin: 4px 0 0;
     font-size: 15px; line-height: 1.55;
     color: var(--ink-2);
-    max-width: 58ch;
+    max-width: 64ch;
   }
   @media (max-height: 760px){
     .slide-conclusion h2{ font-size: clamp(28px, 4vw, 48px); margin-bottom: 12px; }
@@ -1168,13 +1171,16 @@
   }
 
   /* =========================================================
-     Slide 08 — Credits (with 3D truck scene backdrop)
+     Slide 08 - Credits (with 3D truck scene backdrop)
      ========================================================= */
   .slide-credits{ position: relative; }
 
-  /* 3D scene fills the slide behind the credits card */
+  /* 3D scene is constrained to the right half of the slide so the card
+     on the left can't be obscured by the truck or pallets. */
   .three-stage{
-    position: absolute; inset: 0;
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    left: 50%;
     z-index: 0;
     background: var(--bg);
     overflow: hidden;
@@ -1236,37 +1242,67 @@
     text-wrap: balance;
   }
   .slide-credits h2 em{ font-style: italic; font-weight: 400; color: var(--ink-2); }
-  .slide-credits .credits{
+  .slide-credits .pitch-lead{
+    font-family: var(--sans);
+    font-size: 15px; line-height: 1.55;
+    color: var(--ink-2);
+    margin: -6px 0 18px;
+    max-width: 52ch;
+  }
+  .slide-credits .credits,
+  .slide-credits .contact{
     list-style: none; padding: 0; margin: 0;
   }
-  .slide-credits .credits li{
+  .slide-credits .credits li,
+  .slide-credits .contact li{
     display: grid;
-    grid-template-columns: 1fr 1.3fr;
+    grid-template-columns: 1fr 1.6fr;
     align-items: baseline;
     gap: 18px;
-    padding: 11px 0;
+    padding: 9px 0;
     border-top: 1px solid var(--line);
     opacity: 0; transform: translateY(8px);
     transition: opacity .55s ease, transform .55s ease;
   }
-  .slide-credits .credits li:last-child{ border-bottom: 1px solid var(--line); }
+  .slide-credits .credits li:last-child,
+  .slide-credits .contact li:last-child{ border-bottom: 1px solid var(--line); }
   .slide-credits .credits li.on,
-  .slide-credits.credits-on .credits li{ opacity: 1; transform: translateY(0); }
+  .slide-credits .contact li.on,
+  .slide-credits.credits-on .credits li,
+  .slide-credits.credits-on .contact li{ opacity: 1; transform: translateY(0); }
   /* staggered auto-reveal when the slide becomes active */
-  .slide-credits.credits-on .credits li:nth-child(1){ transition-delay: .15s; }
-  .slide-credits.credits-on .credits li:nth-child(2){ transition-delay: .30s; }
-  .slide-credits.credits-on .credits li:nth-child(3){ transition-delay: .45s; }
-  .slide-credits.credits-on .credits li:nth-child(4){ transition-delay: .60s; }
+  .slide-credits.credits-on .credits li:nth-child(1){ transition-delay: .10s; }
+  .slide-credits.credits-on .credits li:nth-child(2){ transition-delay: .20s; }
+  .slide-credits.credits-on .credits li:nth-child(3){ transition-delay: .30s; }
+  .slide-credits.credits-on .credits li:nth-child(4){ transition-delay: .40s; }
+  .slide-credits.credits-on .contact li:nth-child(1){ transition-delay: .60s; }
+  .slide-credits.credits-on .contact li:nth-child(2){ transition-delay: .70s; }
+  .slide-credits.credits-on .contact li:nth-child(3){ transition-delay: .80s; }
+  .slide-credits .pitch-loc{
+    font-family: var(--sans);
+    font-size: 14.5px; line-height: 1.55;
+    color: var(--ink);
+    margin: 18px 0 12px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    max-width: 54ch;
+    opacity: 0; transform: translateY(6px);
+    transition: opacity .55s ease, transform .55s ease;
+    transition-delay: .50s;
+  }
+  .slide-credits.credits-on .pitch-loc{ opacity: 1; transform: translateY(0); }
   .slide-credits .role{
     font-family: var(--mono); font-size: 10.5px; letter-spacing: .18em;
     color: var(--muted); text-transform: uppercase;
   }
   .slide-credits .tool{
-    font-family: var(--display); font-size: clamp(16px, 1.6vw, 20px);
+    font-family: var(--display); font-size: clamp(15px, 1.5vw, 18px);
     font-weight: 500; color: var(--ink); letter-spacing: -.005em;
+    text-decoration: none;
   }
+  a.tool:hover{ color: var(--accent); }
   .slide-credits .foot{
-    margin-top: 18px;
+    margin-top: 16px;
     font-family: var(--mono); font-size: 10px; letter-spacing: .24em;
     color: var(--muted); text-transform: uppercase;
   }
@@ -1281,10 +1317,22 @@
       padding: 90px 22px 76px;
     }
     .credits-card{ max-width: 100%; }
+    /* On mobile, scene reverts to full-width backdrop behind the card */
+    .slide-credits .three-stage{ left: 0; opacity: 0.55; }
+  }
+  @media (max-height: 800px){
+    .slide-credits .inner-8{ padding: 84px 6vw 64px; padding-left: max(6vw, 340px); }
+    .credits-card{ padding: 22px 28px 20px; }
+    .slide-credits h2{ font-size: clamp(20px, 2.2vw, 28px); margin-bottom: 14px; }
+    .slide-credits .pitch-lead{ font-size: 14px; margin: -4px 0 14px; }
+    .slide-credits .credits li,
+    .slide-credits .contact li{ padding: 7px 0; }
+    .slide-credits .pitch-loc{ margin: 14px 0 10px; padding-top: 12px; font-size: 13.5px; }
+    .slide-credits .foot{ margin-top: 12px; }
   }
 
   /* =========================================================
-     Left index rail — slide navigation + click-to-jump
+     Left index rail - slide navigation + click-to-jump
      ========================================================= */
   .rail{
     position: fixed; left: 32px; top: 50%; transform: translateY(-50%);
@@ -1391,11 +1439,11 @@
      href="https://www.linkedin.com/in/christopher-milner-50463229/"
      target="_blank"
      rel="noopener"
-     aria-label="Christopher Milner on LinkedIn">
+     aria-label="Chris Milner on LinkedIn">
     <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
       <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z" fill="currentColor"/>
     </svg>
-    <span class="ln-label">Christopher Milner</span>
+    <span class="ln-label">Chris Milner</span>
   </a>
 </div>
 
@@ -1408,7 +1456,7 @@
   <div class="rail-labels" id="railLabels"></div>
 </aside>
 
-<!-- ============ Slide 01 — Title ============ -->
+<!-- ============ Slide 01 - Title ============ -->
 <section class="snap-slide" id="slide-1">
   <div class="inner">
 
@@ -1431,12 +1479,12 @@
   </div>
 </section>
 
-<!-- ============ Slide 02 — What is an AI scheduling assistant for? ============ -->
+<!-- ============ Slide 02 - What is an AI scheduling assistant for? ============ -->
 <section class="snap-slide slide-dispatch" id="slide-2">
   <div class="inner-2">
 
     <div class="col-left">
-      <div class="num">Slide 02 — Context</div>
+      <div class="num">Slide 02 · Context</div>
       <h2>What is an AI scheduling assistant <em>for</em>?</h2>
       <p class="lead">A trucking company runs a fleet of heavy vehicles. A human needs to consider a large number of variables to build a daily schedule:</p>
 
@@ -1469,13 +1517,13 @@
   </div>
 </section>
 
-<!-- ============ Slide 03 — How do we measure success? ============ -->
+<!-- ============ Slide 03 - How do we measure success? ============ -->
 <section class="snap-slide slide-success" id="slide-3">
   <div class="inner-3">
 
     <!-- Left: narrative text -->
     <div class="col-text">
-      <div class="num">Slide 03 — Success metrics</div>
+      <div class="num">Slide 03 · Success metrics</div>
       <h2>How do we measure <em>success</em>?</h2>
 
       <div class="sec" data-beat="1">
@@ -1513,7 +1561,7 @@
       </div>
 
       <p class="pivot" data-beat="5">
-        Sounds easy — we just measure before, and then measure after?
+        Sounds easy. We just measure before, and then measure after?
       </p>
     </div>
 
@@ -1531,13 +1579,13 @@
   </div>
 </section>
 
-<!-- ============ Slide 04 — Not really. (confounders) ============ -->
+<!-- ============ Slide 04 - Not really. (confounders) ============ -->
 <section class="snap-slide slide-confound" id="slide-4">
   <div class="inner-4">
 
     <!-- Left: text -->
     <div class="col-text">
-      <div class="num">Slide 04 — The catch</div>
+      <div class="num">Slide 04 · The catch</div>
       <h2 id="slide4-h"><span class="hl">Not really.</span></h2>
 
       <p class="sub" data-beat="1">
@@ -1551,7 +1599,7 @@
         </li>
         <li data-beat="3">
           <b>Business changes over time.</b>
-          Win a new customer and we suddenly have more routes — none of it the agent's doing.
+          Win a new customer and we suddenly have more routes, none of it the agent's doing.
         </li>
         <li data-beat="4">
           <b>The broader economy shifts.</b>
@@ -1607,22 +1655,22 @@
           <line class="launch-line" x1="400" y1="32" x2="400" y2="222"/>
           <text class="launch-text" x="400" y="240" text-anchor="middle">AGENT LIVE  →</text>
         </svg>
-        <div class="cap">Did the dip come from the agent — or from the season, a new customer, or the economy?</div>
+        <div class="cap">Did the dip come from the agent, or from the season, a new customer, or the economy?</div>
       </div>
     </div>
 
   </div>
 </section>
 
-<!-- ============ Slide 05 — Normalise metrics ============ -->
+<!-- ============ Slide 05 - Normalise metrics ============ -->
 <section class="snap-slide slide-normalise" id="slide-5">
   <div class="inner-5">
 
     <!-- Left: text -->
     <div class="col-text">
-      <div class="num">Slide 05 — Normalisation</div>
+      <div class="num">Slide 05 · Normalisation</div>
       <h2>Normalise metrics so <em>seasonal changes</em> don't show through.</h2>
-      <p class="lead">Pick ratios that follow what the agent is actually optimising — not what's easiest to count.</p>
+      <p class="lead">Pick ratios that follow what the agent is actually optimising, not what's easiest to count.</p>
 
       <div class="rule" data-beat="1">
         <div class="swap">
@@ -1630,7 +1678,7 @@
           <span class="arr">→</span>
           <span class="right">Fuel per delivery</span>
         </div>
-        <p class="why">A good agent batches deliveries on a route — heavier load, more fuel per km. Per-km <em>penalises</em> consolidation; per-delivery rewards it.</p>
+        <p class="why">A good agent batches deliveries on a route: heavier load, more fuel per km. Per-km <em>penalises</em> consolidation; per-delivery rewards it.</p>
       </div>
 
       <div class="rule" data-beat="2">
@@ -1687,13 +1735,13 @@
   </div>
 </section>
 
-<!-- ============ Slide 06 — Tools available ============ -->
+<!-- ============ Slide 06 - Tools available ============ -->
 <section class="snap-slide slide-tools" id="slide-6">
   <div class="inner-6">
 
     <div class="tools-head">
-      <div class="num">Slide 06 — Tools available</div>
-      <h2>Different tools we have to <em>compare</em> — and where each one breaks.</h2>
+      <div class="num">Slide 06 · Tools available</div>
+      <h2>Different tools we have to <em>compare</em>, and where each one breaks.</h2>
     </div>
 
     <div class="sub-stage" id="slide6-stage">
@@ -1702,10 +1750,10 @@
       <div class="sub-card active" data-idx="0">
         <div class="sub-num">01 / 04 · SEASONAL</div>
         <h3>Compare Q1 to Q1.</h3>
-        <p class="sub-lead">Hold the season constant — compare this year's Q1 with last year's Q1.</p>
+        <p class="sub-lead">Hold the season constant: compare this year's Q1 with last year's Q1.</p>
         <p class="sub-prob">
           <strong>The catch</strong>
-          The business may have changed substantially across those periods — new contracts, lost customers, different fleet size. We're not comparing apples to apples.
+          The business may have changed substantially across those periods: new contracts, lost customers, different fleet size. We're not comparing apples to apples.
         </p>
         <div class="sub-visual">
           <svg class="v-fruit" viewBox="0 0 400 200">
@@ -1749,7 +1797,7 @@
             <!-- Australia outline -->
             <path class="outline"
               d="M 60 130 Q 80 105, 130 95 Q 180 88, 230 85 Q 260 80, 290 88 Q 305 78, 322 84 Q 332 95, 340 115 Q 348 135, 350 158 Q 348 185, 332 205 Q 310 222, 270 230 Q 220 235, 170 232 Q 120 225, 90 210 Q 68 195, 60 170 Q 54 148, 60 130 Z" />
-            <!-- Queensland (NE) — green / control -->
+            <!-- Queensland (NE) - green / control -->
             <path class="qld"
               d="M 248 85 Q 280 80, 298 88 Q 310 78, 320 86 Q 330 100, 332 122 Q 333 138, 320 144 Q 295 148, 265 144 Q 248 138, 244 122 Q 240 100, 248 85 Z" />
             <!-- NSW (SE just below QLD) -->
@@ -1845,13 +1893,13 @@
   </div>
 </section>
 
-<!-- ============ Slide 07 — Strategic implementation (conclusion) ============ -->
+<!-- ============ Slide 07 - Strategic implementation (conclusion) ============ -->
 <section class="snap-slide slide-conclusion" id="slide-7">
   <div class="inner-7">
     <div class="header">
-      <div class="num">Slide 07 — Strategic implementation</div>
+      <div class="num">Slide 07 · Strategic implementation</div>
       <h2>Business intelligence <em>over brute data</em>.</h2>
-      <p class="lead">Successful measurement isn't just about the delta in numbers — it's about the "business smarts" of the rollout.</p>
+      <p class="lead">Successful measurement isn't just about the delta in numbers. It's about the "business smarts" of the rollout.</p>
     </div>
     <ol class="principles">
       <li data-beat="1">
@@ -1870,7 +1918,7 @@
   </div>
 </section>
 
-<!-- ============ Slide 08 — Credits (with 3D truck scene) ============ -->
+<!-- ============ Slide 08 - Credits (with 3D truck scene) ============ -->
 <section class="snap-slide slide-credits" id="slide-8">
 
   <!-- 3D scene backdrop -->
@@ -1885,13 +1933,24 @@
 
   <div class="inner-8">
     <div class="credits-card">
-      <div class="num">Slide 08 — Credits</div>
-      <h2>This presentation was made with <em>AI-augmented tooling</em>.</h2>
+      <div class="num">Slide 08 · Hi Will</div>
+      <h2>Hi Will, I'm <em>Chris.</em></h2>
+      <p class="pitch-lead">
+        This deck was built with the same AI-augmented stack I'd bring to Beyond Data.
+      </p>
       <ul class="credits">
         <li data-beat="1"><span class="role">Content</span><span class="tool">Human brains</span></li>
         <li data-beat="2"><span class="role">Design &amp; transitions</span><span class="tool">Claude (design)</span></li>
         <li data-beat="3"><span class="role">Development</span><span class="tool">Claude Code</span></li>
         <li data-beat="4"><span class="role">Deployment</span><span class="tool">Google Cloud</span></li>
+      </ul>
+      <p class="pitch-loc" data-beat="5">
+        Sunshine Coast, QLD based. Happy to travel for customer site visits across SE QLD and beyond.
+      </p>
+      <ul class="contact" data-beat="6">
+        <li><span class="role">Phone</span><a class="tool" href="tel:+61423403440">0423 403 440</a></li>
+        <li><span class="role">Email</span><a class="tool" href="mailto:chris.milner@protonmail.com">chris.milner@protonmail.com</a></li>
+        <li><span class="role">LinkedIn</span><a class="tool" href="https://www.linkedin.com/in/christopher-milner-50463229/" target="_blank" rel="noopener">christopher-milner</a></li>
       </ul>
       <div class="foot">// end of deck</div>
     </div>
@@ -1901,7 +1960,7 @@
 <script>
   gsap.registerPlugin(ScrollTrigger);
 
-  /* ===== Lenis — only used for programmatic smooth scrollTo ===== */
+  /* ===== Lenis - only used for programmatic smooth scrollTo ===== */
   const lenis = new Lenis({
     duration: 0.6,
     easing: t => 1 - Math.pow(1 - t, 3),
@@ -1954,7 +2013,7 @@
     driveTruckIn();
   });
 
-  /* ===== Slide 2 — dispatch board build ===== */
+  /* ===== Slide 2 - dispatch board build ===== */
   const sched2State = (function buildSlide2(){
     const sched   = document.getElementById('sched2');
     const content = document.getElementById('sched2-content');
@@ -2009,11 +2068,11 @@
         <text class="fatigue-label" x="${FB_X + FB_W/2}" y="${yC + 14}" text-anchor="middle">${Math.round(ff*100)}%</text>
       </g>`;
     });
-    svg += `<text class="fatigue-label" x="${568 + 11}" y="42" text-anchor="middle">FATIGUE</text>`;
+    svg += `<text class="fatigue-label" x="${568 + 11}" y="28" text-anchor="middle">FATIGUE</text>`;
     content.innerHTML = svg;
 
     const statusEl = document.getElementById('sched2Status');
-    const statusByBeat = ['EMPTY','LOADS ASSIGNED','+ DEPARTURE TIMES','+ DRIVERS','— CONSTRAINTS —','+ FATIGUE LIMITS','+ ON-TIME CHECK'];
+    const statusByBeat = ['EMPTY','LOADS ASSIGNED','+ DEPARTURE TIMES','+ DRIVERS','·· CONSTRAINTS ··','+ FATIGUE LIMITS','+ ON-TIME CHECK'];
     const bulletEls = Array.from(document.querySelectorAll('#slide-2 [data-beat]'));
     const MAX_BEAT = 6;
     let beat = 0;
@@ -2039,7 +2098,7 @@
     };
   })();
 
-  /* ===== Slide 3 — text-first with right-rail Forge readouts ===== */
+  /* ===== Slide 3 - text-first with right-rail Forge readouts ===== */
   const slide3State = (function buildSlide3(){
     const root = document.getElementById('slide3-readouts');
     if(!root) return null;
@@ -2047,15 +2106,15 @@
     // Each readout is tied to a section beat (1..4).
     // 6 readouts total, one or two per section.
     const READOUTS = [
-      // section 1 — Efficiency
+      // section 1 - Efficiency
       { beat:1, key:'FUEL / LOAD', unit:'GAL',   from:5.8,  to:4.8,  dec:1, max:8,   dir:'down' },
       { beat:1, key:'DEADHEAD',    unit:'%',     from:18.4, to:12.4, dec:1, max:25,  dir:'down' },
-      // section 2 — Compliance
+      // section 2 - Compliance
       { beat:2, key:'HOS BREACHES',unit:'# / WK',from:8,    to:3,    dec:0, max:12,  dir:'down' },
-      // section 3 — Drivers
+      // section 3 - Drivers
       { beat:3, key:'TURNOVER',    unit:'% / YR',from:92,   to:64,   dec:0, max:100, dir:'down' },
       { beat:3, key:'DRIVER NPS',  unit:'PTS',   from:12,   to:38,   dec:0, max:100, dir:'up'   },
-      // section 4 — Business
+      // section 4 - Business
       { beat:4, key:'LOAD ACCEPT', unit:'%',     from:78,   to:92,   dec:0, max:100, dir:'up'   },
     ];
 
@@ -2134,7 +2193,7 @@
     };
   })();
 
-  /* ===== Slide 4 — Not really. (seasonality confounds) ===== */
+  /* ===== Slide 4 - Not really. (seasonality confounds) ===== */
   const slide4State = (function buildSlide4(){
     const svg     = document.getElementById('season-svg');
     const headerH = document.getElementById('slide4-h');
@@ -2170,8 +2229,6 @@
 
       // subtitle reveals at beat 1
       sub.classList.toggle('on', beat >= 1);
-      sub.style.opacity = beat >= 1 ? '1' : '0';
-      sub.style.transform = beat >= 1 ? 'translateY(0)' : 'translateY(8px)';
 
       // reason bullets
       reasons.forEach(el => {
@@ -2208,7 +2265,7 @@
     };
   })();
 
-  /* ===== Slide 5 — Normalise metrics (gauges + stubborn) ===== */
+  /* ===== Slide 5 - Normalise metrics (gauges + stubborn) ===== */
   const slide5State = (function buildSlide5(){
     const normEl = document.getElementById('slide5-norm-gauges');
     const stubEl = document.getElementById('slide5-stubborn');
@@ -2319,7 +2376,7 @@
     };
   })();
 
-  /* ===== Slide 6 — Tools available (sub-card carousel) ===== */
+  /* ===== Slide 6 - Tools available (sub-card carousel) ===== */
   const slide6State = (function buildSlide6(){
     const stage = document.getElementById('slide6-stage');
     const dots  = document.getElementById('slide6-dots');
@@ -2350,7 +2407,7 @@
     };
   })();
 
-  /* ===== Slide 7 — Strategic implementation (conclusion) ===== */
+  /* ===== Slide 7 - Strategic implementation (conclusion) ===== */
   const slide7State = (function buildSlide7(){
     const items = Array.from(document.querySelectorAll('#slide-7 .principles li'));
     if(!items.length) return null;
@@ -2373,7 +2430,7 @@
     };
   })();
 
-  /* ===== Slide 8 — Colophon (credits) ===== */
+  /* ===== Slide 8 - Colophon (credits) ===== */
   const slide8State = (function buildSlide8(){
     const items = Array.from(document.querySelectorAll('#slide-8 .credits li'));
     if(!items.length) return null;
@@ -2402,7 +2459,7 @@
 
   // Per-slide beat state. Index = slide position
   // (0=title, 1=dispatch, 2=metrics, 3=confounders, 4=normalise, 5=tools, 6=conclusion)
-  // Slide 7 (credits) reveals automatically — no beat gating.
+  // Slide 7 (credits) reveals automatically - no beat gating.
   const slideStates = {
     1: sched2State,
     2: slide3State,
@@ -2413,7 +2470,7 @@
   };
   const TOTAL_SLIDES = 8;
 
-  /* ===== Left index rail — labels, click-to-jump, pill tracking ===== */
+  /* ===== Left index rail - labels, click-to-jump, pill tracking ===== */
   const RAIL = [
     { idx: '01', title: 'Title',     sub: 'How would you measure?' },
     { idx: '02', title: 'Context',   sub: 'Daily dispatch' },
@@ -2422,7 +2479,7 @@
     { idx: '05', title: 'Normalise', sub: 'Per-delivery ratios' },
     { idx: '06', title: 'Tools',     sub: 'Four approaches' },
     { idx: '07', title: 'Strategy',  sub: 'Business smarts' },
-    { idx: '08', title: 'Credits',   sub: 'Built with' },
+    { idx: '08', title: 'Hi Will',   sub: 'About me & contact' },
   ];
 
   (function buildRail(){
@@ -2514,7 +2571,7 @@
     if(animating || snapping) return;
     const curr = Math.round(window.scrollY / vh());
 
-    // Already at the last slide — nothing to advance to
+    // Already at the last slide - nothing to advance to
     if(curr >= TOTAL_SLIDES - 1){
       const st = slideStates[curr];
       if(st && !st.atEnd()) st.advance();
@@ -2598,7 +2655,7 @@
   window.addEventListener('resize', () => ScrollTrigger.refresh());
 </script>
 
-<!-- ============ Slide 08 — 3D truck scene (lazy-loaded) ============ -->
+<!-- ============ Slide 08 - 3D truck scene (lazy-loaded) ============ -->
 <script type="module">
   const stage = document.getElementById('threeStage');
   const loadingEl = document.getElementById('threeLoading');
@@ -2665,7 +2722,7 @@
 
     truckState = { x: 0, z: 0, heading: 0, baseSpeed: 11, maxTurnRate: 2.6, pickupRadius: 2.0 };
 
-    // Load GLB — same approach as truck-drive.html
+    // Load GLB - same approach as truck-drive.html
     const loader = new GLTFLoader();
     loader.load('model(6).glb',
       (gltf) => {
