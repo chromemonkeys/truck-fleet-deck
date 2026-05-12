@@ -1175,12 +1175,11 @@
      ========================================================= */
   .slide-credits{ position: relative; }
 
-  /* 3D scene is constrained to the right half of the slide so the card
-     on the left can't be obscured by the truck or pallets. */
+  /* 3D scene covers the full slide; the camera is biased in JS so the
+     truck stays in the right half (where the card doesn't overlap). */
   .three-stage{
     position: absolute;
-    top: 0; right: 0; bottom: 0;
-    left: 50%;
+    inset: 0;
     z-index: 0;
     background: var(--bg);
     overflow: hidden;
@@ -1275,9 +1274,10 @@
   .slide-credits.credits-on .credits li:nth-child(2){ transition-delay: .20s; }
   .slide-credits.credits-on .credits li:nth-child(3){ transition-delay: .30s; }
   .slide-credits.credits-on .credits li:nth-child(4){ transition-delay: .40s; }
-  .slide-credits.credits-on .contact li:nth-child(1){ transition-delay: .60s; }
-  .slide-credits.credits-on .contact li:nth-child(2){ transition-delay: .70s; }
-  .slide-credits.credits-on .contact li:nth-child(3){ transition-delay: .80s; }
+  .slide-credits.credits-on .credits li:nth-child(5){ transition-delay: .50s; }
+  .slide-credits.credits-on .contact li:nth-child(1){ transition-delay: .70s; }
+  .slide-credits.credits-on .contact li:nth-child(2){ transition-delay: .80s; }
+  .slide-credits.credits-on .contact li:nth-child(3){ transition-delay: .90s; }
   .slide-credits .pitch-loc{
     font-family: var(--sans);
     font-size: 14.5px; line-height: 1.55;
@@ -1288,7 +1288,7 @@
     max-width: 54ch;
     opacity: 0; transform: translateY(6px);
     transition: opacity .55s ease, transform .55s ease;
-    transition-delay: .50s;
+    transition-delay: .60s;
   }
   .slide-credits.credits-on .pitch-loc{ opacity: 1; transform: translateY(0); }
   .slide-credits .role{
@@ -1317,8 +1317,8 @@
       padding: 90px 22px 76px;
     }
     .credits-card{ max-width: 100%; }
-    /* On mobile, scene reverts to full-width backdrop behind the card */
-    .slide-credits .three-stage{ left: 0; opacity: 0.55; }
+    /* On mobile, dim the scene a bit so the card stays legible on top */
+    .slide-credits .three-stage{ opacity: 0.55; }
   }
   @media (max-height: 800px){
     .slide-credits .inner-8{ padding: 84px 6vw 64px; padding-left: max(6vw, 340px); }
@@ -1936,13 +1936,14 @@
       <div class="num">Slide 08 · Hi Will</div>
       <h2>Hi Will, I'm <em>Chris.</em></h2>
       <p class="pitch-lead">
-        This deck was built with the same AI-augmented stack I'd bring to Beyond Data.
+        This deck was made with AI-augmented tooling and human creativity.
       </p>
       <ul class="credits">
         <li data-beat="1"><span class="role">Content</span><span class="tool">Human brains</span></li>
         <li data-beat="2"><span class="role">Design &amp; transitions</span><span class="tool">Claude (design)</span></li>
         <li data-beat="3"><span class="role">Development</span><span class="tool">Claude Code</span></li>
-        <li data-beat="4"><span class="role">Deployment</span><span class="tool">Google Cloud</span></li>
+        <li data-beat="4"><span class="role">CI/CD</span><span class="tool">GitHub Actions</span></li>
+        <li data-beat="5"><span class="role">Hosting</span><span class="tool">Google Cloud</span></li>
       </ul>
       <p class="pitch-loc" data-beat="5">
         Sunshine Coast, QLD based. Happy to travel for customer site visits across SE QLD and beyond.
@@ -2827,7 +2828,27 @@
     camera.position.x = Math.sin(orbit) * dolly + truckState.x * 0.35;
     camera.position.z = Math.cos(orbit) * dolly + truckState.z * 0.35;
     camera.position.y = height;
-    camera.lookAt(truckState.x * 0.7, 1.5, truckState.z * 0.7);
+
+    // Bias: shift camera in its own "screen-left" direction so the truck appears
+    // toward the right of the canvas (clear of the credits card on the left).
+    // We slide the camera perpendicular to its view direction without moving the
+    // look-target, which rotates the visible truck off-center.
+    const lookX = truckState.x * 0.7, lookZ = truckState.z * 0.7;
+    const viewX = camera.position.x - lookX;
+    const viewZ = camera.position.z - lookZ;
+    const viewLen = Math.hypot(viewX, viewZ) || 1;
+    // Right axis in world (perpendicular to view, in XZ plane). Sign chosen so
+    // that adding +right shifts the camera screen-right; we want screen-LEFT.
+    const rightX = -viewZ / viewLen;
+    const rightZ =  viewX / viewLen;
+    // Only apply the bias on wide layouts where the card sits beside the scene.
+    // Below the card breakpoint (880px) the card stacks on top and we want the
+    // truck centered.
+    const SCREEN_LEFT_SHIFT = (window.innerWidth > 880) ? 12 : 0;
+    camera.position.x -= rightX * SCREEN_LEFT_SHIFT;
+    camera.position.z -= rightZ * SCREEN_LEFT_SHIFT;
+
+    camera.lookAt(lookX, 1.5, lookZ);
 
     renderer.render(scene, camera);
   }
