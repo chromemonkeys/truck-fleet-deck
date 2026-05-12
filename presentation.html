@@ -2677,6 +2677,7 @@
     inited = true;
     THREE = await import('three');
     const { GLTFLoader } = await import('three/addons/loaders/GLTFLoader.js');
+    const { MeshoptDecoder } = await import('three/addons/libs/meshopt_decoder.module.js');
 
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -2725,7 +2726,8 @@
 
     // Load GLB - same approach as truck-drive.html
     const loader = new GLTFLoader();
-    loader.load('model(6).glb',
+    loader.setMeshoptDecoder(MeshoptDecoder);
+    loader.load('model.compressed.glb',
       (gltf) => {
         const model = gltf.scene;
         const box = new THREE.Box3().setFromObject(model);
