@@ -1422,6 +1422,102 @@
   @media (max-height: 640px){
     .rail{ display: none; }
   }
+
+  /* =========================================================
+     Mobile overrides
+     Hooked via body.is-mobile (set in JS from a matchMedia query),
+     not a CSS @media block, so the JS-driven bypass and the visual
+     overrides stay in sync.
+     ========================================================= */
+  body.is-mobile{
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  body.is-mobile .snap-slide{
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+  /* Force every reveal-gated element to its 'on' state */
+  body.is-mobile [data-beat],
+  body.is-mobile .slide-confound .sub,
+  body.is-mobile .slide-confound .pivot,
+  body.is-mobile .slide-success .pivot,
+  body.is-mobile .slide-success .sec,
+  body.is-mobile .slide-confound ul.reasons li,
+  body.is-mobile .slide-conclusion .principles li,
+  body.is-mobile .slide-normalise .rule,
+  body.is-mobile .readout,
+  body.is-mobile .slide-credits .pitch-loc{
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  /* Slide 4 headline underline */
+  body.is-mobile .slide-confound h2 .hl::before{ transform: scaleX(1) !important; }
+  /* Slide 2 schedule: show everything at once */
+  body.is-mobile .sched .load-rect,
+  body.is-mobile .sched .depart-label,
+  body.is-mobile .sched .driver-label,
+  body.is-mobile .sched .fatigue-bar,
+  body.is-mobile .sched .deadline-mark{ opacity: 1 !important; transform: none !important; }
+  /* Title slide: park the truck visible immediately and drop the scroll hint */
+  body.is-mobile .truck{ transform: none !important; opacity: 1 !important; }
+  body.is-mobile .scroll-hint{ display: none; }
+  /* Drop the side rail and top progress bar (mobile users scroll natively) */
+  body.is-mobile .rail{ display: none !important; }
+  body.is-mobile .progress-line{ display: none; }
+  /* Slide 6 carousel: stack cards vertically and make them flow */
+  body.is-mobile .sub-stage{
+    overflow: visible;
+    border: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    height: auto;
+  }
+  body.is-mobile .sub-card{
+    position: relative;
+    inset: auto;
+    transform: none !important;
+    opacity: 1 !important;
+    pointer-events: auto;
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+  }
+  body.is-mobile .sub-card:first-child{ border-top: 0; }
+  body.is-mobile .sub-dots{ display: none; }
+  /* Slide 8 (Hi Will): drop the 3D backdrop entirely and let the card take the slide */
+  body.is-mobile .slide-credits .three-stage{ display: none !important; }
+  body.is-mobile .slide-credits .inner-8{
+    grid-template-columns: 1fr;
+    padding: 90px 22px 76px;
+  }
+  body.is-mobile .credits-card{ max-width: 100%; }
+  /* Generic inner-container fixes: drop 2-col grids, allow content to grow */
+  body.is-mobile .slide-dispatch .inner-2,
+  body.is-mobile .slide-success .inner-3,
+  body.is-mobile .slide-confound .inner-4,
+  body.is-mobile .slide-normalise .inner-5,
+  body.is-mobile .slide-tools .inner-6,
+  body.is-mobile .slide-conclusion .inner-7{
+    grid-template-columns: 1fr !important;
+    height: auto;
+    min-height: 100dvh;
+    padding: 78px 22px 64px;
+    row-gap: 28px;
+    column-gap: 0;
+    max-width: 100%;
+  }
+  body.is-mobile .snap-slide .inner{
+    grid-template-rows: auto 1fr auto;
+    padding: 78px 22px 64px;
+    min-height: 100dvh;
+    height: auto;
+  }
+  /* Topbar/footbar text sizing for narrow screens */
+  body.is-mobile .topbar{ font-size: 9px; padding: 12px 14px; gap: 8px; }
+  body.is-mobile .topbar .title{ max-width: 60%; }
+  body.is-mobile .footbar{ font-size: 9px; padding: 10px 14px; }
 </style>
 </head>
 <body>
@@ -1961,6 +2057,13 @@
 <script>
   gsap.registerPlugin(ScrollTrigger);
 
+  /* ===== Mobile detection =====
+     The deck's beat-by-beat scroll gating is hostile on touch screens, so on
+     small viewports we bypass it: reveal every beat up-front, leave the page
+     to scroll natively, and drop the heavy 3D credits scene. */
+  const IS_MOBILE = window.matchMedia('(max-width: 900px), (pointer: coarse) and (max-width: 1024px)').matches;
+  if(IS_MOBILE) document.body.classList.add('is-mobile');
+
   /* ===== Lenis - only used for programmatic smooth scrollTo ===== */
   const lenis = new Lenis({
     duration: 0.6,
@@ -2011,7 +2114,13 @@
 
   window.addEventListener('load', () => {
     document.body.classList.add('is-loaded');
-    driveTruckIn();
+    if(IS_MOBILE){
+      // No drive-in animation on mobile; just park the truck on stage.
+      gsap.set(truck, { x: 0 });
+      truckOnStage = true;
+    } else {
+      driveTruckIn();
+    }
   });
 
   /* ===== Slide 2 - dispatch board build ===== */
@@ -2537,6 +2646,9 @@
     if(footSection && RAIL[curr]) footSection.textContent = RAIL[curr].title;
   }
   lenis.on('scroll', updateFooter);
+  if(IS_MOBILE){
+    window.addEventListener('scroll', () => { updateRail(); updateFooter(); }, { passive: true });
+  }
   updateFooter(); updateRail();
 
   /* Jump directly to a slide (used by rail clicks).
@@ -2611,36 +2723,52 @@
     if(after === 0 && !truckOnStage) driveTruckIn();
   }
 
-  /* Wheel (throttled) */
-  let wheelCooldown = false;
-  window.addEventListener('wheel', e => {
-    e.preventDefault();
-    if(wheelCooldown || animating || snapping) return;
-    wheelCooldown = true;
-    setTimeout(() => { wheelCooldown = false; }, 150);
-    if(e.deltaY > 6) goNext();
-    else if(e.deltaY < -6) goPrev();
-  }, { passive: false });
+  if(!IS_MOBILE){
+    /* Wheel (throttled) */
+    let wheelCooldown = false;
+    window.addEventListener('wheel', e => {
+      e.preventDefault();
+      if(wheelCooldown || animating || snapping) return;
+      wheelCooldown = true;
+      setTimeout(() => { wheelCooldown = false; }, 150);
+      if(e.deltaY > 6) goNext();
+      else if(e.deltaY < -6) goPrev();
+    }, { passive: false });
 
-  /* Keyboard */
-  window.addEventListener('keydown', e => {
-    if(['ArrowDown','PageDown'].includes(e.key) || (e.key === ' ' && !e.shiftKey)){
-      e.preventDefault(); goNext();
-    } else if(['ArrowUp','PageUp'].includes(e.key) || (e.key === ' ' && e.shiftKey)){
-      e.preventDefault(); goPrev();
-    }
-  });
+    /* Keyboard */
+    window.addEventListener('keydown', e => {
+      if(['ArrowDown','PageDown'].includes(e.key) || (e.key === ' ' && !e.shiftKey)){
+        e.preventDefault(); goNext();
+      } else if(['ArrowUp','PageUp'].includes(e.key) || (e.key === ' ' && e.shiftKey)){
+        e.preventDefault(); goPrev();
+      }
+    });
 
-  /* Touch */
-  let touchStartY = null;
-  window.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
-  window.addEventListener('touchend', e => {
-    if(touchStartY == null) return;
-    const dy = e.changedTouches[0].clientY - touchStartY;
-    touchStartY = null;
-    if(Math.abs(dy) < 40) return;
-    if(dy < 0) goNext(); else goPrev();
-  }, { passive: true });
+    /* Touch */
+    let touchStartY = null;
+    window.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
+    window.addEventListener('touchend', e => {
+      if(touchStartY == null) return;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      touchStartY = null;
+      if(Math.abs(dy) < 40) return;
+      if(dy < 0) goNext(); else goPrev();
+    }, { passive: true });
+  } else {
+    /* Mobile: reveal every beat-gated element immediately so all content is
+       visible during natural scrolling. */
+    Object.values(slideStates).forEach(st => {
+      if(!st) return;
+      let guard = 50;
+      while(st.atEnd && !st.atEnd() && guard-- > 0) st.advance();
+    });
+    // Slide-4 headline highlight underline (normally a ScrollTrigger).
+    const slide4h = document.getElementById('slide4-h');
+    if(slide4h) slide4h.classList.add('on');
+    // Slide-8 credits reveal (normally an IntersectionObserver on the 3D scene).
+    const slide8 = document.getElementById('slide-8');
+    if(slide8) slide8.classList.add('credits-on');
+  }
 
   /* ===== Top progress bar ===== */
   const progressFill = document.getElementById('progressFill');
@@ -2658,6 +2786,11 @@
 
 <!-- ============ Slide 08 - 3D truck scene (lazy-loaded) ============ -->
 <script type="module">
+  // Skip the entire 3D scene on mobile - too expensive and not useful at small sizes.
+  if(document.body.classList.contains('is-mobile')) {
+    const stageEl = document.getElementById('threeStage');
+    if(stageEl) stageEl.remove();
+  } else {
   const stage = document.getElementById('threeStage');
   const loadingEl = document.getElementById('threeLoading');
   const loadBar = document.getElementById('threeLoadBar');
@@ -2961,6 +3094,7 @@
     }
   }, { threshold: 0.4 });
   io.observe(slide8);
+  } // end else (non-mobile 3D scene)
 </script>
 
 </body>
