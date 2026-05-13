@@ -1425,9 +1425,9 @@
 
   /* =========================================================
      Mobile overrides
-     Hooked via body.is-mobile (set in JS from a matchMedia query),
-     not a CSS @media block, so the JS-driven bypass and the visual
-     overrides stay in sync.
+     Hooked via body.is-mobile (set in JS from a matchMedia query).
+     Layout switches to native vertical scroll; animations still fire
+     on scroll via an IntersectionObserver per slide (see script).
      ========================================================= */
   body.is-mobile{
     overflow-y: auto;
@@ -1438,35 +1438,11 @@
     min-height: 100dvh;
     overflow: visible;
   }
-  /* Force every reveal-gated element to its 'on' state */
-  body.is-mobile [data-beat],
-  body.is-mobile .slide-confound .sub,
-  body.is-mobile .slide-confound .pivot,
-  body.is-mobile .slide-success .pivot,
-  body.is-mobile .slide-success .sec,
-  body.is-mobile .slide-confound ul.reasons li,
-  body.is-mobile .slide-conclusion .principles li,
-  body.is-mobile .slide-normalise .rule,
-  body.is-mobile .readout,
-  body.is-mobile .slide-credits .pitch-loc{
-    opacity: 1 !important;
-    transform: none !important;
-  }
-  /* Slide 4 headline underline */
-  body.is-mobile .slide-confound h2 .hl::before{ transform: scaleX(1) !important; }
-  /* Slide 2 schedule: show everything at once */
-  body.is-mobile .sched .load-rect,
-  body.is-mobile .sched .depart-label,
-  body.is-mobile .sched .driver-label,
-  body.is-mobile .sched .fatigue-bar,
-  body.is-mobile .sched .deadline-mark{ opacity: 1 !important; transform: none !important; }
-  /* Title slide: park the truck visible immediately and drop the scroll hint */
-  body.is-mobile .truck{ transform: none !important; opacity: 1 !important; }
-  body.is-mobile .scroll-hint{ display: none; }
   /* Drop the side rail and top progress bar (mobile users scroll natively) */
   body.is-mobile .rail{ display: none !important; }
   body.is-mobile .progress-line{ display: none; }
-  /* Slide 6 carousel: stack cards vertically and make them flow */
+  body.is-mobile .scroll-hint{ display: none; }
+  /* Slide 6 carousel: stack cards vertically. Each card reveals on its own. */
   body.is-mobile .sub-stage{
     overflow: visible;
     border: 0;
@@ -1478,21 +1454,27 @@
   body.is-mobile .sub-card{
     position: relative;
     inset: auto;
-    transform: none !important;
-    opacity: 1 !important;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: opacity .65s ease, transform .65s ease;
     pointer-events: auto;
     padding: 18px 0;
     border-top: 1px solid var(--line);
   }
   body.is-mobile .sub-card:first-child{ border-top: 0; }
+  body.is-mobile .sub-card.mobile-on{
+    transform: translateY(0);
+    opacity: 1;
+  }
   body.is-mobile .sub-dots{ display: none; }
-  /* Slide 8 (Hi Will): drop the 3D backdrop entirely and let the card take the slide */
-  body.is-mobile .slide-credits .three-stage{ display: none !important; }
+  /* Slide 8 (Hi Will): single-column with the 3D scene as a backdrop */
   body.is-mobile .slide-credits .inner-8{
     grid-template-columns: 1fr;
     padding: 90px 22px 76px;
+    padding-left: 22px;
   }
   body.is-mobile .credits-card{ max-width: 100%; }
+  body.is-mobile .slide-credits .three-stage{ left: 0; opacity: 0.5; }
   /* Generic inner-container fixes: drop 2-col grids, allow content to grow */
   body.is-mobile .slide-dispatch .inner-2,
   body.is-mobile .slide-success .inner-3,
@@ -2114,13 +2096,7 @@
 
   window.addEventListener('load', () => {
     document.body.classList.add('is-loaded');
-    if(IS_MOBILE){
-      // No drive-in animation on mobile; just park the truck on stage.
-      gsap.set(truck, { x: 0 });
-      truckOnStage = true;
-    } else {
-      driveTruckIn();
-    }
+    driveTruckIn();
   });
 
   /* ===== Slide 2 - dispatch board build ===== */
@@ -2755,19 +2731,48 @@
       if(dy < 0) goNext(); else goPrev();
     }, { passive: true });
   } else {
-    /* Mobile: reveal every beat-gated element immediately so all content is
-       visible during natural scrolling. */
-    Object.values(slideStates).forEach(st => {
-      if(!st) return;
-      let guard = 50;
-      while(st.atEnd && !st.atEnd() && guard-- > 0) st.advance();
-    });
-    // Slide-4 headline highlight underline (normally a ScrollTrigger).
-    const slide4h = document.getElementById('slide4-h');
-    if(slide4h) slide4h.classList.add('on');
-    // Slide-8 credits reveal (normally an IntersectionObserver on the 3D scene).
-    const slide8 = document.getElementById('slide-8');
-    if(slide8) slide8.classList.add('credits-on');
+    /* Mobile: native scroll. Each slide's animations fire when the slide
+       scrolls into view via IntersectionObserver, advancing beats with a
+       small delay between each so the reveal sequence plays out. */
+    function playBeats(state, interval){
+      if(!state) return;
+      const tick = () => {
+        if(state.atEnd && state.atEnd()) return;
+        state.advance();
+        setTimeout(tick, interval || 380);
+      };
+      tick();
+    }
+
+    const slideHandlers = {
+      'slide-2': () => playBeats(slideStates[1]),
+      'slide-3': () => playBeats(slideStates[2]),
+      'slide-4': () => {
+        const h = document.getElementById('slide4-h'); if(h) h.classList.add('on');
+        playBeats(slideStates[3]);
+      },
+      'slide-5': () => playBeats(slideStates[4]),
+      'slide-6': () => {
+        // Stack-and-reveal each carousel card in sequence.
+        document.querySelectorAll('#slide-6 .sub-card').forEach((card, i) => {
+          setTimeout(() => card.classList.add('mobile-on'), i * 250);
+        });
+      },
+      'slide-7': () => playBeats(slideStates[6]),
+      'slide-8': () => {
+        const s = document.getElementById('slide-8'); if(s) s.classList.add('credits-on');
+      },
+    };
+
+    const slideObs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(!entry.isIntersecting) return;
+        const handler = slideHandlers[entry.target.id];
+        if(handler){ handler(); slideObs.unobserve(entry.target); }
+      });
+    }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
+
+    document.querySelectorAll('.snap-slide').forEach(s => slideObs.observe(s));
   }
 
   /* ===== Top progress bar ===== */
@@ -2786,11 +2791,6 @@
 
 <!-- ============ Slide 08 - 3D truck scene (lazy-loaded) ============ -->
 <script type="module">
-  // Skip the entire 3D scene on mobile - too expensive and not useful at small sizes.
-  if(document.body.classList.contains('is-mobile')) {
-    const stageEl = document.getElementById('threeStage');
-    if(stageEl) stageEl.remove();
-  } else {
   const stage = document.getElementById('threeStage');
   const loadingEl = document.getElementById('threeLoading');
   const loadBar = document.getElementById('threeLoadBar');
@@ -3094,7 +3094,6 @@
     }
   }, { threshold: 0.4 });
   io.observe(slide8);
-  } // end else (non-mobile 3D scene)
 </script>
 
 </body>
